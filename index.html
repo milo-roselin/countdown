@@ -5,278 +5,39 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>🏫 Tam Valley School Countdown</title>
   <style>
-    :root {
-      --bg1: #f8fafc;
-      --bg2: #ffffff;
-      --text: #0f172a;
-      --muted: #475569;
-      --panel: #ffffff;
-      --panel-dark: #0f172a;
-      --panel-dark-text: #ffffff;
-      --border: #e2e8f0;
-      --shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
-      --shadow-soft: 0 8px 20px rgba(15, 23, 42, 0.06);
-    }
-
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      font-family: Inter, system-ui, -apple-system, sans-serif;
-      color: var(--text);
-      background: linear-gradient(to bottom, var(--bg1), var(--bg2));
-      min-height: 100vh;
-      padding: 16px;
-    }
-
-    .wrap { max-width: 1000px; margin: 0 auto; }
-
-    .header { text-align: center; margin-bottom: 18px; }
-
-    .header h1 { font-size: clamp(32px, 6vw, 60px); margin: 0; }
-
-    .header p { color: var(--muted); font-size: clamp(16px, 2.5vw, 20px); margin-top: 8px; }
-
-    .card {
-      background: var(--panel);
-      border-radius: 28px;
-      box-shadow: var(--shadow);
-      padding: 20px;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 18px;
-    }
-
-    .remaining-box {
-      background: var(--panel-dark);
-      color: white;
-      border-radius: 24px;
-      padding: 24px;
-      text-align: center;
-      position: relative;
-    }
-
-    .flash {
-      position: absolute;
-      top: 10px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-weight: 800;
-      font-size: 20px;
-      color: #22c55e;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-
-    .flash.show { opacity: 1; }
-
-    .label { font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.7; }
-
-    .remaining-number { font-size: clamp(90px, 18vw, 150px); font-weight: 900; line-height: 1; }
-
-    .remaining-text { font-size: clamp(24px, 4vw, 36px); opacity: 0.9; }
-
-    .mini-card {
-      background: white;
-      border-radius: 20px;
-      padding: 18px;
-      box-shadow: var(--shadow-soft);
-    }
-
-    .percent { font-size: 36px; font-weight: 800; margin-bottom: 10px; }
-
-    .progress-track {
-      width: 100%; height: 14px; background: #e2e8f0; border-radius: 999px; overflow: hidden;
-    }
-
-    .progress-fill {
-      height: 100%; background: #0f172a; width: 0%; transition: width 0.4s ease;
-    }
-
-    .facts {
-      margin-top: 10px;
-      font-size: clamp(15px, 3vw, 18px);
-      display: grid;
-      gap: 6px;
-      color: var(--muted);
-    }
-
-    .facts strong { color: var(--text); }
-
-    @media (max-width: 700px) {
-      .grid { grid-template-columns: 1fr; }
-      body { padding: 10px; }
-      .remaining-number { font-size: 120px; }
-    }
+    :root{--bg1:#f8fafc;--bg2:#fff;--text:#0f172a;--muted:#475569;--panel:#fff;--panel-dark:#0f172a;--border:#e2e8f0;--shadow:0 12px 30px rgba(15,23,42,.08);--shadow-soft:0 8px 20px rgba(15,23,42,.06)}
+    *{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,sans-serif;color:var(--text);background:linear-gradient(to bottom,var(--bg1),var(--bg2));min-height:100vh;padding:16px}.wrap{max-width:1000px;margin:0 auto}.header{text-align:center;margin-bottom:18px}.header h1{font-size:clamp(32px,6vw,60px);margin:0}.header p{color:var(--muted);font-size:clamp(16px,2.5vw,20px);margin-top:8px}.card{background:var(--panel);border-radius:28px;box-shadow:var(--shadow);padding:20px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.remaining-box{background:var(--panel-dark);color:white;border-radius:24px;padding:24px;text-align:center;position:relative}.flash{position:absolute;top:10px;left:50%;transform:translateX(-50%);font-weight:800;font-size:20px;color:#22c55e;opacity:0;transition:opacity .3s ease;white-space:nowrap}.flash.show{opacity:1}.label{font-size:12px;letter-spacing:.2em;text-transform:uppercase;opacity:.7}.remaining-number{font-size:clamp(72px,14vw,150px);font-weight:900;line-height:1}.remaining-text{font-size:clamp(22px,4vw,36px);opacity:.9}.mini-card{background:white;border-radius:20px;padding:18px;box-shadow:var(--shadow-soft)}.percent{font-size:36px;font-weight:800;margin-bottom:10px}.progress-track{width:100%;height:14px;background:#e2e8f0;border-radius:999px;overflow:hidden}.progress-fill{height:100%;background:#0f172a;width:0%;transition:width .4s ease}.facts{margin-top:10px;font-size:clamp(15px,3vw,18px);display:grid;gap:6px;color:var(--muted)}.facts strong{color:var(--text)}@media(max-width:700px){.grid{grid-template-columns:1fr}body{padding:10px}.remaining-number{font-size:110px}}
   </style>
 </head>
 <body>
-  <div class="wrap">
-
-    <div class="header">
-      <h1>🏫 Tam Valley Countdown</h1>
-      <p>School days left until June 12, 2026 — then hours, minutes, and seconds on the final day</p>
-    </div>
-
-    <div class="card">
-      <div class="grid">
-
-        <div class="remaining-box">
-          <div class="flash" id="flash">SCHOOL'S OUT 🎉</div>
-          <div class="label">Remaining</div>
-          <div class="remaining-number" id="remaining-number">0</div>
-          <div class="remaining-text" id="remaining-text">school days</div>
-        </div>
-
-        <div>
-          <div class="mini-card">
-            <div class="percent" id="progress-percent">0%</div>
-            <div class="progress-track">
-              <div class="progress-fill" id="progress-fill"></div>
-            </div>
-            <div class="facts">
-              <div><strong>Completed:</strong> <span id="completed-days"></span></div>
-              <div><strong>Left:</strong> <span id="school-days-left"></span></div>
-              <div><strong>Total:</strong> <span id="total-days"></span></div>
-            </div>
-          </div>
-
-          <div class="mini-card" style="margin-top:12px">
-            <div class="facts">
-              <div><strong>Today:</strong> <span id="today-text"></span></div>
-              <div><strong>Last day:</strong> <span id="final-day-text"></span></div>
-              <div><strong>Calendar days left:</strong> <span id="calendar-days-left"></span></div>
-              <div><strong>Final bell time:</strong> <span id="final-bell-text"></span></div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </div>
-
-  <script>
-    const LAST_DAY = new Date(2026, 5, 12);
-
-    const REGULAR_BELL = { h: 14, m: 35 };
-    const WEDNESDAY_BELL = { h: 13, m: 45 };
-
-    const ANCHOR_DATE = new Date(2026, 2, 23);
-    const ANCHOR_COMPLETED_SCHOOL_DAYS = 126;
-    const TOTAL_SCHOOL_DAYS = 180;
-    const LEFT_ANCHOR_DATE = new Date(2026, 4, 11); // May 11, 2026
-    const LEFT_ANCHOR_DAYS_AFTER_BELL = 23;
-
-    const CLOSED_DATES = new Set([
-      "2026-04-06","2026-04-07","2026-04-08","2026-04-09","2026-04-10","2026-05-25"
-    ]);
-
-    function stripTime(d){ d=new Date(d); d.setHours(0,0,0,0); return d; }
-
-    function iso(d){
-      const year = d.getFullYear();
-      const month = String(d.getMonth()+1).padStart(2,'0');
-      const day = String(d.getDate()).padStart(2,'0');
-      return `${year}-${month}-${day}`;
-    }
-
-    function isSchoolDay(d){
-      const day=d.getDay();
-      return day!==0 && day!==6 && !CLOSED_DATES.has(iso(d));
-    }
-
-    function count(start,end){
-      let c=0;
-      let cur=new Date(start);
-      while(cur<=end){
-        if(isSchoolDay(cur)) c++;
-        cur.setDate(cur.getDate()+1);
-      }
-      return c;
-    }
-
-    function getBellTime(date){
-      if(date.getDay() === 3){ // Wednesday
-        return new Date(date.getFullYear(), date.getMonth(), date.getDate(), WEDNESDAY_BELL.h, WEDNESDAY_BELL.m);
-      }
-      return new Date(date.getFullYear(), date.getMonth(), date.getDate(), REGULAR_BELL.h, REGULAR_BELL.m);
-    }
-
-    function format(d){ return d.toLocaleDateString(undefined,{weekday:"long",month:"long",day:"numeric"}); }
-
-    function isAfterBell(now){
-      const bell = getBellTime(now);
-      return now >= bell;
-    }
-
-    function getDaysLeft(now){
-      const today = stripTime(now);
-      const anchor = stripTime(LEFT_ANCHOR_DATE);
-
-      if(today < anchor){
-        return count(today, LAST_DAY);
-      }
-
-      if(today.getTime() === anchor.getTime()){
-        return isAfterBell(now) ? LEFT_ANCHOR_DAYS_AFTER_BELL : LEFT_ANCHOR_DAYS_AFTER_BELL + 1;
-      }
-
-      let daysFinishedAfterAnchor = 0;
-      const cursor = new Date(anchor);
-      cursor.setDate(cursor.getDate() + 1);
-
-      while(cursor < today){
-        if(isSchoolDay(cursor)) daysFinishedAfterAnchor++;
-        cursor.setDate(cursor.getDate() + 1);
-      }
-
-      if(isSchoolDay(today) && isAfterBell(now)){
-        daysFinishedAfterAnchor++;
-      }
-
-      return Math.max(0, LEFT_ANCHOR_DAYS_AFTER_BELL - daysFinishedAfterAnchor);
-    }
-
-    function update(){
-      const now = new Date();
-      const today = stripTime(now);
-      const bellToday = getBellTime(now);
-
-      let left = today>LAST_DAY?0:getDaysLeft(now);
-
-      const afterBell = now >= bellToday;
-      const showFlash = isSchoolDay(today) && afterBell && (now - bellToday < 1000 * 60 * 10);
-
-      if(showFlash){
-        document.getElementById("flash").classList.add("show");
-      } else {
-        document.getElementById("flash").classList.remove("show");
-      }
-
-      const done = TOTAL_SCHOOL_DAYS - left;
-      const pct = Math.round(done/TOTAL_SCHOOL_DAYS*100);
-
-      const ms=1000*60*60*24;
-      const cal = Math.max(0, Math.ceil((stripTime(LAST_DAY)-today)/ms));
-
-      document.getElementById("remaining-number").textContent=left;
-      document.getElementById("remaining-text").textContent=`school day${left===1?"":"s"}`;
-      document.getElementById("progress-percent").textContent=pct+"%";
-      document.getElementById("progress-fill").style.width=pct+"%";
-      document.getElementById("completed-days").textContent=done;
-      document.getElementById("school-days-left").textContent=left;
-      document.getElementById("total-days").textContent=TOTAL_SCHOOL_DAYS;
-      document.getElementById("today-text").textContent=format(today);
-      document.getElementById("final-day-text").textContent=format(stripTime(LAST_DAY));
-      document.getElementById("calendar-days-left").textContent=cal;
-      document.getElementById("final-bell-text").textContent=bellToday.toLocaleTimeString([], {hour:'numeric', minute:'2-digit'});
-    }
-
-    update();
-    setInterval(update,1000);
-  </script>
+  <div class="wrap"><div class="header"><h1>🏫 Tam Valley Countdown</h1><p id="subtitle">School days left until the last day — then summer countdown</p></div><div class="card"><div class="grid"><div class="remaining-box"><div class="flash" id="flash">SCHOOL'S OUT 🎉</div><div class="label" id="main-label">Remaining</div><div class="remaining-number" id="remaining-number">0</div><div class="remaining-text" id="remaining-text">school days</div></div><div><div class="mini-card"><div class="percent" id="progress-percent">0%</div><div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div><div class="facts"><div><strong>Completed:</strong> <span id="completed-days"></span></div><div><strong>Left:</strong> <span id="school-days-left"></span></div><div><strong>Total:</strong> <span id="total-days"></span></div></div></div><div class="mini-card" style="margin-top:12px"><div class="facts"><div><strong>Today:</strong> <span id="today-text"></span></div><div><strong>Last day:</strong> <span id="final-day-text"></span></div><div><strong>Calendar days left:</strong> <span id="calendar-days-left"></span></div><div><strong>Bell / start time:</strong> <span id="final-bell-text"></span></div></div></div></div></div></div></div>
+<script>
+const TOTAL_SCHOOL_DAYS=180;
+const SCHOOL_START_MONTH=7,SCHOOL_START_DAY=19,SCHOOL_START_HOUR=8,SCHOOL_START_MINUTE=15;
+const SCHOOL_END_MONTH=5,SCHOOL_END_DAY=12,LAST_DAY_BELL={h:12,m:15};
+const REGULAR_BELL={h:14,m:35},WEDNESDAY_BELL={h:13,m:45};
+const CLOSED_DATES=new Set(["2026-05-25"]);
+const TRUSTED_LEFT_ANCHOR_DATE=new Date(2026,4,11),TRUSTED_LEFT_AFTER_BELL=23;
+function stripTime(d){d=new Date(d);d.setHours(0,0,0,0);return d}
+function iso(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`}
+function getSchoolStart(y){return new Date(y,SCHOOL_START_MONTH,SCHOOL_START_DAY,SCHOOL_START_HOUR,SCHOOL_START_MINUTE)}
+function getSchoolEnd(y){return new Date(y,SCHOOL_END_MONTH,SCHOOL_END_DAY)}
+function getLastBell(y){return new Date(y,SCHOOL_END_MONTH,SCHOOL_END_DAY,LAST_DAY_BELL.h,LAST_DAY_BELL.m)}
+function isSchoolDay(d){const day=d.getDay();return day!==0&&day!==6&&!CLOSED_DATES.has(iso(d))}
+function countSchoolDays(start,end){let c=0,cur=stripTime(start),last=stripTime(end);while(cur<=last){if(isSchoolDay(cur))c++;cur.setDate(cur.getDate()+1)}return c}
+function getBellTime(date,schoolEnd){if(stripTime(date).getTime()===stripTime(schoolEnd).getTime())return new Date(date.getFullYear(),date.getMonth(),date.getDate(),LAST_DAY_BELL.h,LAST_DAY_BELL.m);if(date.getDay()===3)return new Date(date.getFullYear(),date.getMonth(),date.getDate(),WEDNESDAY_BELL.h,WEDNESDAY_BELL.m);return new Date(date.getFullYear(),date.getMonth(),date.getDate(),REGULAR_BELL.h,REGULAR_BELL.m)}
+function formatDate(d){return d.toLocaleDateString(undefined,{weekday:"long",month:"long",day:"numeric",year:"numeric"})}
+function formatTime(d){return d.toLocaleTimeString([],{hour:'numeric',minute:'2-digit'})}
+function getTrustedDaysLeft(now,schoolEnd){const today=stripTime(now),anchor=stripTime(TRUSTED_LEFT_ANCHOR_DATE),anchorBell=getBellTime(anchor,schoolEnd);if(today<anchor)return countSchoolDays(today,schoolEnd);if(today.getTime()===anchor.getTime())return now>=anchorBell?TRUSTED_LEFT_AFTER_BELL:TRUSTED_LEFT_AFTER_BELL+1;let finished=0,cur=new Date(anchor);cur.setDate(cur.getDate()+1);while(cur<today){if(isSchoolDay(cur))finished++;cur.setDate(cur.getDate()+1)}const todayBell=getBellTime(now,schoolEnd);if(isSchoolDay(today)&&now>=todayBell)finished++;return Math.max(0,TRUSTED_LEFT_AFTER_BELL-finished)}
+function update(){const now=new Date(),y=now.getFullYear(),thisEnd=getSchoolEnd(y),thisLastBell=getLastBell(y),tenAfterThisLastBell=new Date(thisLastBell.getTime()+10*60*1000),thisStart=getSchoolStart(y);let schoolEnd=thisEnd,schoolStart=thisStart;
+  if(now>tenAfterThisLastBell&&now<thisStart){const daysUntilStart=Math.ceil((schoolStart-now)/(1000*60*60*24));document.getElementById("subtitle").textContent="Summer countdown until school starts again";document.getElementById("flash").classList.remove("show");document.getElementById("main-label").textContent="Summer";document.getElementById("remaining-number").textContent=daysUntilStart;document.getElementById("remaining-text").textContent="calendar days until school starts";document.getElementById("progress-percent").textContent="0%";document.getElementById("progress-fill").style.width="0%";document.getElementById("completed-days").textContent="0";document.getElementById("school-days-left").textContent=TOTAL_SCHOOL_DAYS;document.getElementById("total-days").textContent=TOTAL_SCHOOL_DAYS;document.getElementById("today-text").textContent=formatDate(now);document.getElementById("final-day-text").textContent=formatDate(getSchoolEnd(y+1));document.getElementById("calendar-days-left").textContent=daysUntilStart;document.getElementById("final-bell-text").textContent=formatDate(schoolStart)+" at "+formatTime(schoolStart);return}
+  if(now>=getSchoolStart(y)){schoolEnd=getSchoolEnd(y+1);schoolStart=getSchoolStart(y)}
+  const today=stripTime(now),bellToday=getBellTime(now,schoolEnd),lastBell=getLastBell(schoolEnd.getFullYear()),tenAfterLastBell=new Date(lastBell.getTime()+10*60*1000);
+  if(now>=lastBell&&now<=tenAfterLastBell){document.getElementById("subtitle").textContent="School is out for the year!";document.getElementById("flash").classList.add("show");document.getElementById("main-label").textContent="Finished";document.getElementById("remaining-number").textContent="0";document.getElementById("remaining-text").textContent="school is out!";document.getElementById("progress-percent").textContent="100%";document.getElementById("progress-fill").style.width="100%";document.getElementById("completed-days").textContent=TOTAL_SCHOOL_DAYS;document.getElementById("school-days-left").textContent="0";document.getElementById("total-days").textContent=TOTAL_SCHOOL_DAYS;document.getElementById("today-text").textContent=formatDate(now);document.getElementById("final-day-text").textContent=formatDate(schoolEnd);document.getElementById("calendar-days-left").textContent="0";document.getElementById("final-bell-text").textContent=formatTime(lastBell);return}
+  let left;if(schoolEnd.getFullYear()===2026)left=getTrustedDaysLeft(now,schoolEnd);else{left=countSchoolDays(today,schoolEnd);if(isSchoolDay(today)&&now>=bellToday)left=Math.max(0,left-1)}
+  const done=Math.max(0,Math.min(TOTAL_SCHOOL_DAYS,TOTAL_SCHOOL_DAYS-left)),pct=Math.round(done/TOTAL_SCHOOL_DAYS*100),cal=Math.max(0,Math.ceil((stripTime(schoolEnd)-today)/(1000*60*60*24))),showFlash=isSchoolDay(today)&&now>=bellToday&&(now-bellToday<10*60*1000);
+  document.getElementById("subtitle").textContent="School days left until the last day — then summer countdown";document.getElementById("flash").classList.toggle("show",showFlash);document.getElementById("main-label").textContent="Remaining";document.getElementById("remaining-number").textContent=left;document.getElementById("remaining-text").textContent=`school day${left===1?"":"s"}`;document.getElementById("progress-percent").textContent=pct+"%";document.getElementById("progress-fill").style.width=pct+"%";document.getElementById("completed-days").textContent=done;document.getElementById("school-days-left").textContent=left;document.getElementById("total-days").textContent=TOTAL_SCHOOL_DAYS;document.getElementById("today-text").textContent=formatDate(today);document.getElementById("final-day-text").textContent=formatDate(schoolEnd);document.getElementById("calendar-days-left").textContent=cal;document.getElementById("final-bell-text").textContent=formatTime(bellToday)}
+update();setInterval(update,1000);
+</script>
 </body>
 </html>
