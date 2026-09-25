@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MCDS Countdown</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,system-ui,sans-serif;background:linear-gradient(#f8fafc,#fff);color:#0f172a;padding:18px}
+.wrap{max-width:900px;margin:auto}
+header{text-align:center;margin:20px 0}
+h1{font-size:52px;margin:0}
+header p{font-size:18px;color:#475569}
+.card{background:#fff;padding:20px;border-radius:28px;box-shadow:0 12px 30px rgba(15,23,42,.08)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.big{background:#0f172a;color:#fff;border-radius:24px;min-height:270px;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative}
+.label{font-size:12px;letter-spacing:.2em;text-transform:uppercase;opacity:.7}
+#number{font-size:105px;font-weight:900;line-height:1}
+#kind{font-size:28px;margin-top:10px}
+.flash{position:absolute;top:18px;font-weight:800;color:#22c55e;display:none}
+.flash.show{display:block}
+.small{padding:18px;border-radius:20px;box-shadow:0 8px 20px rgba(15,23,42,.06)}
+.percent{font-size:36px;font-weight:800}
+.track{height:14px;background:#e2e8f0;border-radius:99px;overflow:hidden;margin:10px 0}
+.fill{height:100%;background:#0f172a;width:0}
+.facts{display:grid;gap:7px;font-size:17px;color:#475569}
+.facts strong{color:#0f172a}
+@media(max-width:700px){.grid{grid-template-columns:1fr}h1{font-size:38px}#number{font-size:100px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+<h1>🏫 MCDS Countdown</h1>
+<p id="subtitle">MCDS 6th Grade — school days left until the end of the year</p>
+</header>
+<div class="card"><div class="grid">
+<div class="big">
+<div id="flash" class="flash">SCHOOL'S OUT 🎉</div>
+<div class="label">Remaining</div>
+<div id="number">141</div>
+<div id="kind">school days</div>
+</div>
+<div>
+<div class="small">
+<div id="percent" class="percent">16%</div>
+<div class="track"><div id="fill" class="fill" style="width:16%"></div></div>
+<div class="facts">
+<div><strong>Completed:</strong> <span id="completed">26</span></div>
+<div><strong>Left:</strong> <span id="left">141</span></div>
+<div><strong>Total:</strong> <span id="total">167</span></div>
+</div>
+</div>
+<div class="small" style="margin-top:12px">
+<div class="facts">
+<div><strong>Today:</strong> <span id="today">Thursday, September 24, 2026</span></div>
+<div><strong>Last day:</strong> <span id="lastday">Wednesday, June 9, 2027</span></div>
+<div><strong>Calendar days left:</strong> <span id="calendar"></span></div>
+</div>
+</div>
+</div>
+</div></div>
+</div>
+<script>
+(function(){
+"use strict";
+var TOTAL=167;
+var ANCHOR=new Date(2026,8,24);
+var ANCHOR_LEFT=141;
+var END=new Date(2027,5,9);
+var START_NEXT=new Date(2027,7,19,8,15);
+var DAY=86400000;
+
+function dayOnly(d){return new Date(d.getFullYear(),d.getMonth(),d.getDate());}
+function key(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
+function schoolDay(d){
+  var w=d.getDay();
+  if(w===0||w===6)return false;
+  return !CLOSED.has(key(d));
+}
+var CLOSED=new Set([
+  "2026-10-12",
+  "2026-11-11",
+  "2026-11-23","2026-11-24","2026-11-25","2026-11-26","2026-11-27",
+  "2026-12-21","2026-12-22","2026-12-23","2026-12-24","2026-12-25","2026-12-28","2026-12-29","2026-12-30","2026-12-31",
+  "2027-01-01","2027-01-18",
+  "2027-02-15","2027-02-16","2027-02-17","2027-02-18","2027-02-19",
+  "2027-04-05","2027-04-06","2027-04-07","2027-04-08","2027-04-09",
+  "2027-05-31"
+]);
+function bell(d){
+  if(d.getFullYear()===2027&&d.getMonth()===5&&d.getDate()===9)return new Date(2027,5,9,12,15);
+  return new Date(d.getFullYear(),d.getMonth(),d.getDate(),d.getDay()===3?14:15,0);
+}
+function fmt(d){return d.toLocaleDateString(undefined,{weekday:"long",month:"long",day:"numeric",year:"numeric"});}
+function finishedAfterAnchor(now){
+  var t=dayOnly(now), c=new Date(ANCHOR), n=0;
+  c.setDate(c.getDate()+1);
+  while(c<t){if(schoolDay(c))n++;c.setDate(c.getDate()+1);}
+  if(schoolDay(t)&&now>=bell(now))n++;
+  return n;
+}
+function setText(id,v){document.getElementById(id).textContent=v;}
+function update(){
+  var now=new Date(), today=dayOnly(now);
+  var lastBell=new Date(2027,5,9,12,15);
+  var flashEnd=new Date(lastBell.getTime()+600000);
+
+  setText("today",fmt(now));
+  setText("lastday",fmt(END));
+
+  if(now>=lastBell && now<flashEnd){
+    document.getElementById("flash").classList.add("show");
+    setText("number","0"); setText("kind","school is out!");
+    setText("completed",TOTAL); setText("left","0"); setText("total",TOTAL);
+    setText("percent","100%"); document.getElementById("fill").style.width="100%";
+    setText("calendar","0"); return;
+  }
+
+  if(now>=flashEnd && now<START_NEXT){
+    document.getElementById("flash").classList.remove("show");
+    var summer=Math.ceil((START_NEXT-now)/DAY);
+    setText("subtitle","Summer countdown until MCDS starts again");
+    setText("number",summer); setText("kind","calendar days until school starts");
+    setText("completed","0"); setText("left",TOTAL); setText("total",TOTAL);
+    setText("percent","0%"); document.getElementById("fill").style.width="0%";
+    setText("calendar",summer); return;
+  }
+
+  var left;
+  if(today.getTime()===ANCHOR.getTime()){
+    left=now>=bell(now)?ANCHOR_LEFT:ANCHOR_LEFT+1;
+  }else if(today>ANCHOR){
+    left=Math.max(0,ANCHOR_LEFT-finishedAfterAnchor(now));
+  }else{
+    left=ANCHOR_LEFT;
+  }
+  var done=TOTAL-left;
+  var pct=Math.round(done/TOTAL*100);
+  setText("number",left);
+  setText("kind",left===1?"school day":"school days");
+  setText("completed",done);
+  setText("left",left);
+  setText("total",TOTAL);
+  setText("percent",pct+"%");
+  document.getElementById("fill").style.width=pct+"%";
+  setText("calendar",Math.max(0,Math.ceil((dayOnly(END)-today)/DAY)));
+}
+update();
+setInterval(update,1000);
+})();
+</script>
+</body>
+</html>
